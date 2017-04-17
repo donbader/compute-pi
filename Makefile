@@ -1,9 +1,13 @@
 CC = gcc
-CFLAGS = -O0 -std=gnu99 -Wall -fopenmp -mavx
+CFLAGS = -O0 -std=gnu99 -Wall -fopenmp -mavx 
 EXECUTABLE = \
 	time_test_baseline time_test_openmp_2 time_test_openmp_4 \
 	time_test_avx time_test_avxunroll \
-	benchmark_clock_gettime
+	benchmark_clock_gettime \
+	benchmark_formula_iter_times 
+CSV = \
+	result_clock_gettime.csv \
+	result_formula_loop_times.csv 
 
 GIT_HOOKS := .git/hooks/pre-commit
 
@@ -22,7 +26,7 @@ default: $(GIT_HOOKS) computepi.o
 .PHONY: clean default
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@ 
+	$(CC) -c $(CFLAGS) $< -o $@
 
 check: default
 	time ./time_test_baseline
@@ -37,5 +41,13 @@ gencsv: default
 		./benchmark_clock_gettime $$i; \
 	done > result_clock_gettime.csv	
 
+gencsv_formula_iter_times: pi_formula.o
+	$(CC) $(CFLAGS) pi_formula.o benchmark_formula_iter_times.c -o benchmark_formula_iter_times -lm
+	for i in `seq 1 1 7`; do \
+		printf "%d," $$i;\
+		./benchmark_formula_iter_times $$i; \
+	done > result_formula_loop_times.csv	
+
+
 clean:
-	rm -f $(EXECUTABLE) *.o *.s result_clock_gettime.csv
+	rm -f $(EXECUTABLE) *.o *.s $(CSV)
