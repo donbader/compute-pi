@@ -4,6 +4,7 @@
 #define MAX_FORMULA_ID 4
 /* formula===========================*/
 
+
 // arctan
 double compute_pi_formula0(size_t N);
 // Lebiniz
@@ -15,6 +16,7 @@ double compute_pi_formula3(size_t N);
 // Chudnovsky
 double compute_pi_formula4(size_t N);
 
+double compute_pi_formula(size_t id, size_t N);
 /* helper================================================================*/
 
 /*The helper function to do the binary search

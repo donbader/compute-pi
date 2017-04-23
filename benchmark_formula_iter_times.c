@@ -2,6 +2,7 @@
 
 int main(int argc, char** argv)
 {
+    if (argc < 2) return -1;
     double max_error = atof(argv[1]);
     // if input > 1, then max_error = 10^(-max_error)
     max_error = max_error > 1 ? pow(10, -max_error) : max_error;

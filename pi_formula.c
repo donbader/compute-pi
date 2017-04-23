@@ -73,6 +73,14 @@ double compute_pi_formula4(size_t N)
 }
 
 
+double compute_pi_formula(size_t formula_id, size_t N)
+{
+    static double (*formula[])(size_t) = {compute_pi_formula0, compute_pi_formula1, compute_pi_formula2, compute_pi_formula3, compute_pi_formula4};
+    if (formula_id > MAX_FORMULA_ID || formula_id < 0) {
+        return -1;
+    }
+    return formula[formula_id](N);
+}
 
 int binary_search(int lower, int upper, int (*judge)(int))
 {
@@ -95,14 +103,13 @@ int binary_search(int lower, int upper, int (*judge)(int))
 
 int convergence(double max_error, int formula_id)
 {
-    static double (*formula[])(size_t) = {compute_pi_formula0, compute_pi_formula1, compute_pi_formula2, compute_pi_formula3, compute_pi_formula4};
     if (formula_id > MAX_FORMULA_ID || formula_id < 0) {
         return -1;
     }
 
     // judge function
     int judge(int n) {
-        double pi = formula[formula_id](n);
+        double pi = compute_pi_formula(formula_id, n);
         double error = abs(pi - M_PI);
         double error_diff = error - max_error;
         // printf("\tN: %d, error: %.10f, error_diff: %.10f\n", n, error, error_diff);
