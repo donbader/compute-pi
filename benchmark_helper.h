@@ -1,4 +1,5 @@
 #include <time.h>
+#include <math.h>
 
 #define CLOCK_ID CLOCK_MONOTONIC_RAW
 #define ONE_SEC 1000000000.0
@@ -32,4 +33,27 @@
                         __TIMER_GET_TIME__(); \
                     })
 
+#define GET_TIME_95(context) ({ \
+    double time[100]; \
+    double time_sum = 0.0, power_sum = 0.0, average = 0.0, SD = 0.0, num; \
+    for(int i =0; i<100; ++i){ \
+        time[i] = GET_TIME(context); \
+        time_sum += time[i]; \
+        power_sum += pow(time[i], 2); \
+    } \
+    average = time_sum / 100; \
+    SD = sqrt(power_sum / 100 - pow(average, 2)); \
+    time_sum = 0, num = 100; \
+    for(int i=0; i<100; ++i) { \
+        if (time[i] > (average - 1.645 * SD) && time[i] < (average + 1.645 * SD)) \
+            time_sum += time[i]; \
+        else \
+            --num; \
+    } \
+    time_sum / num; \
+})
 
+#define PRINT_TIME_95(format, context) do {\
+        double time = GET_TIME_95(context); \
+        printf(format, time); \
+    }while(0)

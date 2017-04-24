@@ -1,13 +1,20 @@
+/*
+ * pi_kernel2.cl
+ *
+ *  Created on: 27/02/2014
+ *      Author: Diego Nieto Muñoz
+ */
+
 __kernel void Pi(__global float *workGroupBuffer, __local float *scratch, const uint niter, const uint chunk) // NumWorkGroups, workGroupSize, Total iterations, Chunk size
 {
 	const uint lid = get_local_id(0);
 	const uint gid = get_global_id(0);
 
-	const float h = (1.0 / (float)niter);
+	const float h = (1.0/(float)niter);
 	float partial_sum = 0.0;
 
 	// Each thread compute chunk iterations
-	for (uint i = gid * chunk; i < (gid * chunk) + chunk; i++) {
+	for(uint i=gid*chunk; i<(gid*chunk)+chunk; i++) {
 		float x = h * ((float) i - 0.5);
 		partial_sum += 4.0 / (1.0 + x * x);
 	}
@@ -22,9 +29,8 @@ __kernel void Pi(__global float *workGroupBuffer, __local float *scratch, const 
 
 	// Only thread 0 of each workgroup perform the reduction
 	// of that workgroup
-	if (lid == 0) {
-		const uint length = lid + get_local_size(0);
-		for (uint i = lid; i < length; i++) {
+	if(lid == 0) {
+		for (uint i = 0; i < get_local_size(0); i++) {
 			local_pi += scratch[i];
 		}
 		// It store the workgroup sum

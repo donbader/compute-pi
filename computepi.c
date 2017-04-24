@@ -5,19 +5,6 @@
 #include <CL/cl.h>
 #include <math.h>
 
-
-#define MAX_SOURCE_SIZE (0x100000)
-
-char *source_str;
-cl_int ret;
-int workGroups;
-size_t workGroupSize;
-cl_context context;
-cl_command_queue command_queue;
-cl_kernel kernel;
-cl_program program;
-cl_mem mem_obj;
-
 double compute_pi_baseline(size_t N)
 {
     double pi = 0.0;
@@ -149,6 +136,21 @@ double compute_pi_avx_unroll(size_t N)
           tmp4[0] + tmp4[1] + tmp4[2] + tmp4[3];
     return pi * 4.0;
 }
+
+// OPENCL
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+char *source_str;
+cl_int ret;
+size_t workGroups;
+size_t workGroupSize;
+cl_context context;
+cl_command_queue command_queue;
+cl_kernel kernel;
+cl_program program;
+cl_mem mem_obj;
+
 void init_opencl(size_t N, size_t chunks)
 {
     // Load the kernel source code into the array source_str
@@ -235,15 +237,3 @@ double compute_pi_opencl(size_t N, size_t chunks)
     return pi;
 }
 
-// int main() {
-//     int N = 1024;
-//     printf("HIHI\n");
-//     init_opencl(N, 1);
-//     printf("0----------%d\n", N);
-
-//     double pi = compute_pi_opencl(N,1 );
-//     release_opencl();
-
-//     printf("1----------%lf\n", pi);
-
-// }
