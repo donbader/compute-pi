@@ -45,14 +45,14 @@ check: default
 
 gencsv: computepi.o
 	$(CC) $(CFLAGS) computepi.o benchmark_clock_gettime.c -o benchmark_clock_gettime -lm -lOpenCL
-	for i in `seq 512 512 51200`; do \
+	for i in `seq 512 512 512000`; do \
 		printf "%d," $$i;\
 		./benchmark_clock_gettime $$i; \
 	done > result_clock_gettime.csv	
 
 gencsv95: computepi.o
 	$(CC) $(CFLAGS) computepi.o benchmark_clock_gettime_95.c -o benchmark_clock_gettime_95 -lm -lOpenCL
-	for i in `seq 512 512 51200`; do \
+	for i in `seq 512 512 512000`; do \
 		printf "%d," $$i;\
 		./benchmark_clock_gettime_95 $$i; \
 	done > result_clock_gettime_95.csv	
@@ -70,11 +70,11 @@ gencsv_formula_time: pi_formula.o result_formula_iter_times.csv
 
 gencsv_compare_omp_threads: computepi.o
 	$(CC) $(CFLAGS) computepi.o benchmark_compare_omp_threads.c -o benchmark_compare_omp_threads -lm -lOpenCL
-	./benchmark_compare_omp_threads 512 512 51200 > result_compare_omp_threads.csv
+	./benchmark_compare_omp_threads 512 512 512000 > result_compare_omp_threads.csv
 
 gencsv_compare_omp_simd_threads: computepi.o
 	$(CC) $(CFLAGS) computepi.o benchmark_compare_omp_simd_threads.c -o benchmark_compare_omp_simd_threads -lm -lOpenCL
-	./benchmark_compare_omp_simd_threads 512 512 51200 > result_compare_omp_simd_threads.csv
+	./benchmark_compare_omp_simd_threads 512 512 512000 > result_compare_omp_simd_threads.csv
 
 
 gencsv_all: gencsv gencsv95 gencsv_formula_iter_times gencsv_formula_time gencsv_compare_omp_threads gencsv_compare_omp_simd_threads

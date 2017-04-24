@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
     if (argc < 4) return -1;
     unsigned lower = atoi(argv[1]), step = atoi(argv[2]), upper = atoi(argv[3]);
     unsigned loop = 25;
-    for (unsigned threads = 1; threads <= 1024; threads *= 2) {
+    for (unsigned threads = 1; threads <= 256; threads *= 2) {
         double time_sum = 0.0;
         printf("%u,", threads);
         for (unsigned N = lower; N <= upper; N += step) {

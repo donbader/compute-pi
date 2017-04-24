@@ -20,9 +20,9 @@ int main(int argc, char const *argv[])
            );
     printf("%.9f,", time / loop);
 
-    // OpenMP with 8 threads
+    // OpenMP with 2 threads
     time = GET_TIME(
-               for (i = 0; i < loop; i++) compute_pi_openmp(N, 8);
+               for (i = 0; i < loop; i++) compute_pi_openmp(N, 2);
            );
     printf("%.9f,", time / loop);
 

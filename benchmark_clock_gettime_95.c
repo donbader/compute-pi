@@ -17,9 +17,9 @@ int main(int argc, char const *argv[])
                    compute_pi_baseline(N);
                  );
 
-    // OpenMP with 8 threads
+    // OpenMP with 2 threads
     PRINT_TIME_95( "%.9f,",
-                   compute_pi_openmp(N, 8);
+                   compute_pi_openmp(N, 2);
                  );
 
     // OpenMP SIMD 2 threads
